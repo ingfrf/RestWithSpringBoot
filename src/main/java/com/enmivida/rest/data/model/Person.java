@@ -1,4 +1,4 @@
-package com.enmivida.rest.model;
+package com.enmivida.rest.data.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

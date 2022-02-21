@@ -1,6 +1,6 @@
 package com.enmivida.rest.controller;
 
-import com.enmivida.rest.model.Person;
+import com.enmivida.rest.data.vo.PersonVO;
 import com.enmivida.rest.services.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,26 +17,26 @@ public class PersonController {
     private final PersonService service;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Person> findPersonById(@PathVariable("id") Long id) {
-        Person person = service.findById(id);
+    public ResponseEntity<PersonVO> findPersonById(@PathVariable("id") Long id) {
+        PersonVO person = service.findById(id);
         return new ResponseEntity<>(person, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<Person>> findAllPeople() {
-        List<Person> people = service.findAll();
+    public ResponseEntity<List<PersonVO>> findAllPeople() {
+        List<PersonVO> people = service.findAll();
         return new ResponseEntity<>(people, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Person> createPerson(@RequestBody Person person) {
-        Person result = service.create(person);
+    public ResponseEntity<PersonVO> createPerson(@RequestBody PersonVO person) {
+        PersonVO result = service.create(person);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Person> updatePerson(@RequestBody Person person) {
-        Person result = service.update(person);
+    public ResponseEntity<PersonVO> updatePerson(@RequestBody PersonVO person) {
+        PersonVO result = service.update(person);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

@@ -1,8 +1,10 @@
 package com.enmivida.rest.services;
 
+import com.enmivida.rest.data.model.Person;
+import com.enmivida.rest.data.vo.PersonVO;
 import com.enmivida.rest.exception.ResourceNotFoundException;
-import com.enmivida.rest.model.Person;
 import com.enmivida.rest.repository.PersonRepository;
+import com.enmivida.rest.utils.mapper.PersonMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,29 +15,35 @@ import java.util.List;
 public class PersonService {
 
     private final PersonRepository repository;
+    private final PersonMapper personMapper;
 
-    public Person findById(Long id) {
-        return repository.findById(id)
+    public PersonVO findById(Long id) {
+        Person person = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this id"));
+        return personMapper.personToPersonVO(person);
     }
 
-    public List<Person> findAll() {
-        return repository.findAll();
+    public List<PersonVO> findAll() {
+        List<Person> personList = repository.findAll();
+        return personMapper.personListToPersonVOList(personList);
     }
 
-    public Person create(Person person) {
-        return repository.save(person);
+    public PersonVO create(PersonVO personVO) {
+        Person person = personMapper.personVOToPerson(personVO);
+        person = repository.save(person);
+        return personMapper.personToPersonVO(person);
+
     }
 
-    public Person update(Person person) {
-        Person entity = repository.findById(person.getId())
+    public PersonVO update(PersonVO personVO) {
+        Person entity = repository.findById(personVO.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this id"));
-        entity.setFirstName(person.getFirstName());
-        entity.setLastName(person.getLastName());
-        entity.setAddress(person.getAddress());
-        entity.setGender(person.getGender());
+        entity.setFirstName(personVO.getFirstName());
+        entity.setLastName(personVO.getLastName());
+        entity.setAddress(personVO.getAddress());
+        entity.setGender(personVO.getGender());
 
-        return repository.save(entity);
+        return personMapper.personToPersonVO(repository.save(entity));
     }
 
     public void deleteById(Long id) {

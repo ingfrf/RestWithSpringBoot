@@ -16,25 +16,27 @@ public class PersonController {
 
     private final PersonService service;
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = { "application/json", "application/xml", "application/x-yaml" })
     public ResponseEntity<PersonVO> findPersonById(@PathVariable("id") Long id) {
         PersonVO person = service.findById(id);
         return new ResponseEntity<>(person, HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping(produces = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<List<PersonVO>> findAllPeople() {
         List<PersonVO> people = service.findAll();
         return new ResponseEntity<>(people, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping(consumes = {"application/json", "application/xml", "application/x-yaml"},
+            produces = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<PersonVO> createPerson(@RequestBody PersonVO person) {
         PersonVO result = service.create(person);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
-    @PutMapping
+    @PutMapping(consumes = {"application/json", "application/xml", "application/x-yaml"},
+            produces = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<PersonVO> updatePerson(@RequestBody PersonVO person) {
         PersonVO result = service.update(person);
         return new ResponseEntity<>(result, HttpStatus.OK);

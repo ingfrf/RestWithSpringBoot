@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 
@@ -14,7 +15,7 @@ import java.io.Serializable;
 @Builder
 @Data
 @JsonPropertyOrder({"id", "address", "firstName", "lastName", "gender"})
-public class PersonVO implements Serializable {
+public class PersonVO extends RepresentationModel<PersonVO> implements Serializable {
     private static final long serialVersionUID = -765522284080245815L;
 
     private Long id;

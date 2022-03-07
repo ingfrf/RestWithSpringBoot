@@ -1,6 +1,7 @@
 package com.enmivida.rest.exception.handler;
 
 import com.enmivida.rest.exception.ExceptionResponse;
+import com.enmivida.rest.exception.InvalidJwtAuthenticationException;
 import com.enmivida.rest.exception.ResourceNotFoundException;
 import com.enmivida.rest.exception.UnsuportedMathOperationException;
 import org.springframework.http.HttpStatus;
@@ -42,5 +43,15 @@ public class CustomizedReponseEntityExceptionHandler {
                 .details(request.getDescription(false))
                 .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ExceptionResponse> handleException(InvalidJwtAuthenticationException exception, WebRequest request) {
+        ExceptionResponse errorResponse = ExceptionResponse.builder()
+                .message(exception.getMessage())
+                .timestamp(System.currentTimeMillis())
+                .details(request.getDescription(false))
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }

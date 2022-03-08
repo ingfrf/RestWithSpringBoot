@@ -6,9 +6,9 @@ import com.enmivida.rest.exception.ResourceNotFoundException;
 import com.enmivida.rest.repository.PersonRepository;
 import com.enmivida.rest.utils.mapper.PersonMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +23,12 @@ public class PersonService {
         return personMapper.personToPersonVO(person);
     }
 
-    public List<PersonVO> findAll() {
-        List<Person> personList = repository.findAll();
-        return personMapper.personListToPersonVOList(personList);
+    public Page<PersonVO> findAll(Pageable pageable) {
+        return repository.findAll(pageable).map(personMapper::personToPersonVO);
+    }
+
+    public Page<PersonVO> findPersonByName(String firstName, Pageable pageable) {
+        return repository.findPersonByFirstNameContaining(firstName, pageable).map(personMapper::personToPersonVO);
     }
 
     public PersonVO create(PersonVO personVO) {
